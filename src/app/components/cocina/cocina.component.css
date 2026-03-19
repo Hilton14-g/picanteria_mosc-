@@ -1,0 +1,380 @@
+/* Monitor de Cocina - Diseño Oscuro con Tarjetas Verdes */
+
+.cocina-container {
+  padding: 20px;
+  background: linear-gradient(135deg, #0d1117 0%, #1a1d29 100%);
+  min-height: 100vh;
+  color: var(--text-primary);
+}
+
+.tickets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.ticket-card {
+  background: linear-gradient(135deg, #1a4d2e 0%, #2e7d32 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid #4CAF50;
+  border-left: 4px solid #FF9800;
+  width: 320px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.25);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.35);
+  border-left-color: #FFB74D;
+}
+
+.ticket-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-strong);
+  border-left-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #4CAF50;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.ticket-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ticket-mesa {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.ticket-hora {
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.ticket-estado {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ticket-estado.pendiente {
+  background: #FFB74D;
+  color: white;
+}
+
+.ticket-estado.preparando {
+  background: #4CAF50;
+  color: white;
+}
+
+.ticket-estado.listo {
+  background: #66BB6A;
+  color: white;
+}
+
+.ticket-body {
+  flex-grow: 1;
+  margin: 15px 0;
+}
+
+.plato-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+  gap: 15px;
+}
+
+.plato-row:last-child {
+  border-bottom: none;
+}
+
+.plato-nombre {
+  flex: 1;
+  font-weight: 500;
+  color: white;
+  line-height: 1.4;
+}
+
+.plato-cantidad {
+  background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
+  color: #1a1a2e;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.btn-listo {
+  background: #1a4d2e;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 15px;
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-listo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(26, 77, 46, 0.35);
+  background: #2e7d32;
+}
+
+.btn-listo:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-refresh {
+  margin: 20px;
+  padding: 12px 24px;
+  background: #1a4d2e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(26, 77, 46, 0.15);
+}
+
+.btn-refresh:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(26, 77, 46, 0.35);
+  background: #2e7d32;
+}
+
+.no-pedidos {
+  width: 100%;
+  text-align: center;
+  font-size: 1.8rem;
+  color: #e0e0e0;
+  margin-top: 80px;
+  padding: 40px;
+  background: #1A1A2E;
+  backdrop-filter: blur(10px);
+  border: 1px solid #4CAF50;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.25);
+}
+
+.no-pedidos .icono {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.8;
+  color: #4CAF50;
+}
+
+/* Header del monitor de cocina */
+.cocina-header {
+  background: linear-gradient(135deg, #1a4d2e 0%, #2e7d32 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid #4CAF50;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.25);
+}
+
+.cocina-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.cocina-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  border-radius: 8px;
+  border: 1px solid #4CAF50;
+}
+
+.stat-numero {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive para tablets */
+@media (max-width: 768px) {
+  .tickets-grid {
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .ticket-card {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .cocina-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .cocina-stats {
+    justify-content: center;
+  }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .cocina-container {
+    padding: 8px;
+  }
+  
+  .tickets-grid {
+    gap: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .ticket-card {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  
+  .cocina-titulo {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+  
+  .cocina-stats {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .stat-card {
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  .ticket-header {
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .ticket-info h3 {
+    font-size: 1rem;
+  }
+  
+  .ticket-time {
+    font-size: 0.8rem;
+  }
+  
+  .ticket-items {
+    font-size: 0.85rem;
+  }
+  
+  .ticket-item {
+    padding: 4px 0;
+  }
+  
+  .ticket-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .btn-completar {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .cocina-container {
+    padding: 5px;
+  }
+  
+  .tickets-grid {
+    gap: 6px;
+    padding: 5px;
+  }
+  
+  .ticket-card {
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .cocina-titulo {
+    font-size: 1.2rem;
+  }
+  
+  .stat-card {
+    padding: 6px;
+  }
+  
+  .ticket-info h3 {
+    font-size: 0.9rem;
+  }
+  
+  .ticket-time {
+    font-size: 0.75rem;
+  }
+  
+  .ticket-items {
+    font-size: 0.8rem;
+  }
+  
+  .btn-completar {
+    padding: 6px;
+    font-size: 0.85rem;
+  }
+}
+

@@ -1,0 +1,111 @@
+<div class="contenedor-pedido">
+  <header class="header-pedido">
+    <button class="btn-regresar" routerLink="/mesas" *ngIf="isLogged">⬅ Volver</button>
+    <button class="btn-regresar" routerLink="/mesas" *ngIf="!isLogged">⬅ Ver Mesas</button>
+    <div class="info-mesa">
+      <div class="mesa-header">
+        <h2>Mesa {{ mesaId }}</h2>
+        <div class="total-badge">
+          <span class="total-amount">S/ {{ total | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      
+      <div class="tiempo-card" *ngIf="tiempoEstimado">
+        <div class="tiempo-icon">
+          <span class="material-symbols-outlined">schedule</span>
+        </div>
+        <div class="tiempo-content">
+          <div class="tiempo-valor">{{ tiempoEstimado }}</div>
+          <div class="tiempo-info">
+            {{ mesasOcupadas }} {{ mesasOcupadas === 1 ? 'mesa' : 'mesas' }} ocupadas
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div class="split-view">
+    <!-- Lista de Categorías -->
+    <nav class="categorias-nav">
+      <button (click)="categoriaSeleccionada = 'TODO'" [class.active]="categoriaSeleccionada === 'TODO'">Todos</button>
+      <button (click)="categoriaSeleccionada = 'CEVICHES'" [class.active]="categoriaSeleccionada === 'CEVICHES'">🌊 Ceviches</button>
+      <button (click)="categoriaSeleccionada = 'MARISCOS'" [class.active]="categoriaSeleccionada === 'MARISCOS'">🥘 Mariscos</button>
+      <button (click)="categoriaSeleccionada = 'BEBIDAS'" [class.active]="categoriaSeleccionada === 'BEBIDAS'">🍺 Bebidas</button>
+    </nav>
+
+    <!-- Sección de Pedidos -->
+    <div class="pedido-section">
+      <!-- ARTÍCULOS YA ENVIADOS A COCINA -->
+      <div class="sent-panel" *ngIf="detallesEnviados.length > 0">
+        <h3>✅ Pedido en Cocina</h3>
+        <div class="sent-item" *ngFor="let det of detallesEnviados">
+          <div class="sent-info">
+            <div class="sent-header-item">
+              <span class="nombre">{{ det.producto?.nombre }}</span>
+              <span class="badge" [ngClass]="det.estado">{{ det.estado }}</span>
+            </div>
+
+            <!-- MODO LECTURA: Solo muestra la cantidad total -->
+            <div class="lectura-enviado" *ngIf="!editandoEnviados.has(det.id)">
+              <span class="cant">Cantidad: {{ det.cantidad }}</span>
+              <button *ngIf="det.estado === 'PENDIENTE'" class="btn-editar-link" (click)="toggleEditar(det.id)">
+                ✏️ Modificar
+              </button>
+            </div>
+
+            <!-- MODO EDICIÓN: Muestra controles +/- y cancelar -->
+            <div class="edicion-enviado" *ngIf="editandoEnviados.has(det.id)">
+              <div class="controles-cantidad">
+                <button (click)="modificarCantidadEnviada(det, -1)">-</button>
+                <span class="cant">{{ det.cantidad }}</span>
+                <button (click)="modificarCantidadEnviada(det, 1)">+</button>
+              </div>
+              <div class="acciones-edicion">
+                <button class="btn-cancel-texto" (click)="cancelarDetalleEnviado(det.id)">
+                  🗑️ Eliminar plato
+                </button>
+                <button class="btn-listo" (click)="toggleEditar(det.id)">
+                  Listo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARRITO ACTUAL (Cosas nuevas por pedir) -->
+      <div class="cart-panel highlighted" *ngIf="carrito.length > 0">
+        <h3 class="cart-title">🆕 Por enviar a Cocina</h3>
+        <div class="cart-item" *ngFor="let item of carrito; let i = index; trackBy: trackByCarrito">
+          <div class="cart-info">
+            <span class="nombre">{{ item.producto.nombre }}</span>
+            <div class="controles-cantidad">
+              <button (click)="modificarCantidad(i, -1)">-</button>
+              <span class="cant">{{ item.cantidad }}</span>
+              <button (click)="modificarCantidad(i, 1)">+</button>
+            </div>
+          </div>
+          <button class="btn-del" (click)="eliminar(i)">🗑️</button>
+        </div>
+        
+        <!-- CORREGIDO: Usar método para el texto y asegurar visibilidad -->
+        <button class="btn-primary-enviar" (click)="enviarACocina()">
+          {{ getTextoBoton() }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cuadrícula de Productos -->
+  <div class="grid-productos">
+    <div *ngFor="let p of productosFiltrados()" class="card-producto">
+      <img [src]="p.imagenUrl || 'https://loremflickr.com/320/240/food,'+p.nombre" class="img-plato">
+      <div class="info-plato">
+        <h3>{{ p.nombre }}</h3>
+        <p class="precio">S/ {{ p.precio }}</p>
+        <button class="btn-agregar" (click)="agregar(p)">+ Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>

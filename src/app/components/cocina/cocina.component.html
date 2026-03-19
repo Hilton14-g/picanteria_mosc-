@@ -1,0 +1,27 @@
+<div class="cocina-container">
+  <h2> Pedidos</h2>
+  
+  <div class="tickets-grid">
+    <div *ngFor="let pedido of pedidosPendientes" class="ticket-card">
+      <div class="ticket-header">
+        <span class="mesa"> MESA {{ pedido.mesa.id }}</span>
+        <span class="hora">⏰ {{ pedido.fechaCreacion | date:'HH:mm' }}</span>
+      </div>
+      
+      <div class="ticket-body">
+        <div *ngFor="let detalle of pedido.detalles" class="plato-row">
+          <span class="cant">{{ detalle.cantidad }}x</span>
+          <span class="nom">{{ detalle.producto.nombre }}</span>
+        </div>
+      </div>
+
+      <button (click)="terminarPedido(pedido.id)" class="btn-listo">
+        Pedido Listo
+      </button>
+    </div>
+
+    <div *ngIf="pedidosPendientes.length === 0" class="no-pedidos">
+       No hay pedidos por preparar. ¡Todo al día!
+    </div>
+  </div>
+</div>

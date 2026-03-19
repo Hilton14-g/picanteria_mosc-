@@ -1,0 +1,106 @@
+<div class="mesa-cuenta-container">
+  <header class="header-cuenta">
+    <button class="btn-regresar" (click)="volverAMesas()">⬅ Volver a Mesas</button>
+    <div class="info-mesa">
+      <h2>🍽️ Mesa {{ mesaId }} - Gestión de Cuenta</h2>
+      <div class="totales-header">
+        <span class="total-pedido">Pedido: S/ {{ totalPedido | number:'1.2-2' }}</span>
+        <span class="total-adicionales">Adicionales: S/ {{ totalCarritoMesero | number:'1.2-2' }}</span>
+        <span class="gran-total">TOTAL: S/ {{ granTotal | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="contenido-cuenta">
+    <!-- Sección Izquierda: Pedido Actual -->
+    <div class="pedido-actual-section">
+      <h3>📋 Pedido Actual</h3>
+      <div *ngIf="!pedidoActual" class="sin-pedido">
+        <p>⚠️ No hay un pedido activo para esta mesa</p>
+        <p>El cliente puede escanear el QR para iniciar un pedido</p>
+        <button class="btn-iniciar-pedido" (click)="iniciarPedidoCliente()">
+          📱 Iniciar Pedido para Cliente
+        </button>
+      </div>
+      
+      <div *ngIf="pedidoActual" class="detalles-pedido">
+        <div class="pedido-info">
+          <span class="pedido-id">Pedido #{{ pedidoActual.id }}</span>
+          <span class="pedido-estado" [class.estado-pendiente]="pedidoActual.estado === 'PENDIENTE'">
+            {{ pedidoActual.estado }}
+          </span>
+        </div>
+        
+        <div class="items-pedido">
+          <div class="item-pedido" *ngFor="let det of pedidoActual.detalles">
+            <div class="item-info">
+              <span class="nombre">{{ det.producto?.nombre }}</span>
+              <span class="cantidad">{{ det.cantidad }}x</span>
+              <span class="precio">S/ {{ (det.precioUnitario * det.cantidad) | number:'1.2-2' }}</span>
+            </div>
+            <div class="item-acciones">
+              <button class="btn-editar-item" (click)="editarItem(det)">
+                ✏️ Editar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Derecha: Agregar Adicionales -->
+    <div class="adicionales-section">
+      <h3>➕ Agregar Adicionales</h3>
+      
+      <!-- Categorías -->
+      <nav class="categorias-nav">
+        <button (click)="categoriaSeleccionada = 'TODO'" [class.active]="categoriaSeleccionada === 'TODO'">Todos</button>
+        <button (click)="categoriaSeleccionada = 'CEVICHES'" [class.active]="categoriaSeleccionada === 'CEVICHES'">🌊 Ceviches</button>
+        <button (click)="categoriaSeleccionada = 'MARISCOS'" [class.active]="categoriaSeleccionada === 'MARISCOS'">🥘 Mariscos</button>
+        <button (click)="categoriaSeleccionada = 'BEBIDAS'" [class.active]="categoriaSeleccionada === 'BEBIDAS'">🍺 Bebidas</button>
+      </nav>
+
+      <!-- Carrito del Mesero -->
+      <div class="carrito-mesero" *ngIf="carritoMesero.length > 0">
+        <h4>🛒 Carrito del Mesero</h4>
+        <div class="carrito-item" *ngFor="let item of carritoMesero; let i = index">
+          <div class="carrito-info">
+            <span class="nombre">{{ item.producto.nombre }}</span>
+            <div class="controles-cantidad">
+              <button (click)="modificarCantidadMesero(i, -1)">-</button>
+              <span class="cant">{{ item.cantidad }}</span>
+              <button (click)="modificarCantidadMesero(i, 1)">+</button>
+            </div>
+            <span class="subtotal">S/ {{ (item.precioUnitario * item.cantidad) | number:'1.2-2' }}</span>
+          </div>
+          <button class="btn-del" (click)="eliminarDelCarritoMesero(i)">🗑️</button>
+        </div>
+      </div>
+
+      <!-- Productos para Agregar -->
+      <div class="productos-grid">
+        <div *ngFor="let p of productosFiltrados()" class="producto-card">
+          <img [src]="p.imagenUrl" class="producto-img">
+          <div class="producto-info">
+            <h4>{{ p.nombre }}</h4>
+            <p class="precio">S/ {{ p.precio }}</p>
+            <button class="btn-agregar" (click)="agregarAlCarritoMesero(p)">+ Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="acciones-footer">
+    <button class="btn-enviar" (click)="enviarAdicionales()" 
+            [disabled]="carritoMesero.length === 0 || !pedidoActual">
+      🚀 Enviar Adicionales a Cocina
+    </button>
+    
+    <button class="btn-imprimir" (click)="imprimirBoleta()" 
+            [disabled]="!pedidoActual">
+      🖨️ Imprimir Boleta
+    </button>
+  </div>
+</div>

@@ -1,0 +1,356 @@
+/* ============================================
+   QR ADMIN - Estilos generales (SCREEN)
+   ============================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.qr-admin-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d1117 0%, #1a1d29 100%);
+  padding: 40px 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #f7971e, #ffd200);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+.btn-imprimir {
+  background: #1a4d2e;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 20px rgba(26, 77, 46, 0.4);
+}
+
+/* GRID DE QR CARDS (ESCRITORIO) */
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.qr-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.mesa-label {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffd200;
+}
+
+/* Contenedor del QR */
+.qr-wrapper {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+/* Forzar tamaño del QR en escritorio */
+.qr-wrapper qrcode ::ng-deep img,
+.qr-wrapper qrcode ::ng-deep canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+.url-preview {
+  font-size: 0.7rem;
+  color: #aaa;
+  word-break: break-all;
+  width: 100%;
+}
+
+.estado-badge {
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid #48c78e;
+  color: #48c78e;
+  background: rgba(72, 199, 142, 0.1);
+}
+
+.estado-badge.ocupada {
+  border-color: #ff6363;
+  color: #ff6363;
+  background: rgba(255, 99, 99, 0.1);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN (TABLETS Y MÓVILES)
+   ============================================ */
+
+/* TABLETS (768px o menos) */
+@media (max-width: 768px) {
+  .header h1 { font-size: 1.8rem; }
+  .qr-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* MÓVILES (480px o menos) */
+@media (max-width: 480px) {
+  .qr-admin-container {
+    padding: 20px 15px;
+  }
+
+  .qr-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+  }
+
+  .qr-card {
+    padding: 30px 20px;
+  }
+
+  .qr-wrapper {
+    max-width: 240px;
+  }
+
+  /* QR Grande para que sea legible en móviles */
+  .qr-wrapper qrcode ::ng-deep img,
+  .qr-wrapper qrcode ::ng-deep canvas {
+    width: 220px !important;
+    height: 220px !important;
+  }
+
+  .mesa-label {
+    font-size: 1.8rem;
+  }
+}
+
+/* TELÉFONOS MUY PEQUEÑOS (320px) */
+@media (max-width: 320px) {
+  .qr-wrapper qrcode ::ng-deep img,
+  .qr-wrapper qrcode ::ng-deep canvas {
+    width: 160px !important;
+    height: 160px !important;
+  }
+}
+
+/* ============================================
+   MEDIA PRINT (IMPRESIÓN)
+   ============================================ */
+@media print {
+  @page { margin: 0; size: portrait; }
+  .no-print, nav, .navbar, .qr-admin-container { display: none !important; }
+  .print-only-area {
+    display: block !important;
+    background: white !important;
+    width: 100% !important;
+    visibility: visible !important;
+  }
+  .print-card {
+    display: block !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    page-break-after: always !important;
+    text-align: center !important;
+    padding-top: 15vh !important;
+  }
+  .print-mesa-label {
+    color: black !important;
+    font-size: 5rem !important;
+    font-weight: 900;
+    margin-bottom: 2cm !important;
+    text-transform: uppercase !important;
+  }
+
+  .print-qr-wrapper {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 450px !important;
+    height: 450px !important;
+  }
+
+  /* Forzar que el QR se vea bien y grande */
+  .print-qr-wrapper qrcode ::ng-deep img,
+  .print-qr-wrapper qrcode ::ng-deep canvas {
+    width: 450px !important;
+    height: 450px !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Responsive Design - Optimizado para pantallas pequeñas */
+@media (max-width: 768px) {
+  .qr-admin-container {
+    padding: 20px 15px;
+  }
+  
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .header p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .btn-imprimir {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+  
+  .qr-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .qr-card {
+    padding: 20px;
+  }
+  
+  .qr-wrapper {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .qr-wrapper qrcode ::ng-deep img,
+  .qr-wrapper qrcode ::ng-deep canvas {
+    width: 160px !important;
+    height: 160px !important;
+  }
+  
+  .mesa-label {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-admin-container {
+    padding: 15px 10px;
+  }
+  
+  .header {
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .header p {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+  
+  .btn-imprimir {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  /* ============================================
+   RESPONSIVE - OPTIMIZADO PARA MÓVILES
+   ============================================ */
+
+@media (max-width: 480px) {
+  .qr-admin-container {
+    padding: 20px 10px;
+  }
+
+  .qr-grid {
+    /* Cambiamos a 1 columna para que no se amontonen */
+    grid-template-columns: 1fr; 
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .qr-card {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Quitamos el min-height restrictivo */
+  }
+
+  /* El QR debe ser legible, mínimo 150px-180px */
+  .qr-wrapper {
+    width: 180px !important;
+    height: 180px !important;
+    margin-bottom: 10px;
+  }
+
+  .qr-wrapper qrcode ::ng-deep img,
+  .qr-wrapper qrcode ::ng-deep canvas {
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  .mesa-label {
+    font-size: 1.4rem;
+    margin-top: 5px;
+  }
+
+  .url-preview {
+    display: block; /* Aseguramos que se vea si quieres la URL */
+    font-size: 0.75rem;
+  }
+}
+
+/* Ajuste extra para teléfonos muy pequeños (iPhone SE, etc.) */
+@media (max-width: 320px) {
+  .qr-wrapper,
+  .qr-wrapper qrcode ::ng-deep img,
+  .qr-wrapper qrcode ::ng-deep canvas {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  
+  .header h1 {
+    font-size: 1.4rem;
+  }
+}
+}

@@ -1,0 +1,41 @@
+<div class="qr-admin-container no-print">
+
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>🍽️ Códigos QR por Mesa</h1>
+    <p>Imprime estos QR y pégalos en cada mesa. Los clientes lo escanean y van directo a pedir.</p>
+    <button class="btn-imprimir" (click)="imprimir()">🖨️ Imprimir todos los QR</button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="mesas.length === 0">
+    <p>Cargando mesas...</p>
+  </div>
+
+  <!-- Grid de QR codes (Solo para pantalla) -->
+  <div class="qr-grid">
+    <div class="qr-card" *ngFor="let mesa of mesas">
+      <div class="mesa-label">Mesa {{ mesa.numero || mesa.id }}</div>
+      <qrcode [qrdata]="getQrUrl(mesa.id)" [width]="220" [errorCorrectionLevel]="'M'" [colorDark]="'#1a1a2e'"
+        [colorLight]="'#ffffff'" [margin]="2">
+      </qrcode>
+      <div class="url-preview">{{ getQrUrl(mesa.id) }}</div>
+      <div class="estado-badge" [class.ocupada]="mesa.estado === 'OCUPADA'">
+        {{ mesa.estado }}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECCIÓN EXCLUSIVA PARA IMPRESIÓN (Visible solo al imprimir) -->
+<div class="print-only-area">
+  <div class="print-card" *ngFor="let mesa of mesas">
+    <div class="print-mesa-label">MESA {{ mesa.numero || mesa.id }}</div>
+    <div class="print-qr-wrapper">
+      <qrcode [qrdata]="getQrUrl(mesa.id)" [width]="450" [errorCorrectionLevel]="'M'" [colorDark]="'#000000'"
+        [colorLight]="'#ffffff'" [margin]="2">
+      </qrcode>
+    </div>
+  </div>
+</div>

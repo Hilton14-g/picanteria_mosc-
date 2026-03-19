@@ -1,0 +1,35 @@
+<div class="toast-container" 
+     [class.visible]="isVisible"
+     [class.success]="notification.type === 'success'"
+     [class.error]="notification.type === 'error'"
+     [class.warning]="notification.type === 'warning'"
+     [class.info]="notification.type === 'info'">
+  
+  <div class="toast-content">
+    <!-- Icon Section -->
+    <div class="toast-icon">
+      <span class="material-symbols-outlined" [style.color]="getIconColor()">
+        {{ getIcon() }}
+      </span>
+    </div>
+
+    <!-- Message Section -->
+    <div class="toast-message">
+      <div class="toast-title">{{ notification.title }}</div>
+      <div class="toast-description" *ngIf="notification.message">
+        {{ notification.message }}
+      </div>
+    </div>
+
+    <!-- Close Button -->
+    <button class="toast-close" (click)="close()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="toast-progress" 
+       *ngIf="notification.duration && notification.duration > 0"
+       [style.animation-duration]="notification.duration + 'ms'">
+  </div>
+</div>

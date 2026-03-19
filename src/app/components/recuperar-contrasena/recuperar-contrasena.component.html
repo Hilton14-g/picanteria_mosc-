@@ -1,0 +1,166 @@
+<div class="recuperar-container">
+  <div class="recuperar-card">
+    <div class="logo-section">
+      <div class="logo">🔐</div>
+      <h2>Recuperar Contraseña</h2>
+      <p class="subtitle">Restablece tu contraseña de forma segura</p>
+    </div>
+
+    <!-- Formulario para solicitar recuperación (cuando no hay token) -->
+    <div class="form-section" *ngIf="!tokenValido">
+      <!-- Mensaje de error oculto -->
+      <div class="error-message" *ngIf="mensaje" style="display: none !important;">
+        ⚠️ {{ mensaje }}
+      </div>
+      
+      <form (ngSubmit)="enviarRecuperacion()" #f="ngForm" class="recuperar-form">
+        <div class="form-group">
+          <label for="emailRecuperacion">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              id="emailRecuperacion" 
+              name="emailRecuperacion" 
+              [(ngModel)]="emailUsuario" 
+              placeholder="Ingresa tu correo electrónico" 
+              required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-recuperar" [disabled]="cargando || !f.valid">
+          <span *ngIf="!cargando">📧 Enviar Instrucciones</span>
+          <span *ngIf="cargando" class="loading-spinner">
+            <span class="spinner"></span>
+            Enviando...
+          </span>
+        </button>
+      </form>
+
+      <div class="back-to-login">
+        <a routerLink="/login">← Volver al Login</a>
+      </div>
+    </div>
+
+    <!-- Formulario para ingresar token (siempre visible después de enviar email) -->
+    <div class="form-section" *ngIf="emailUsuario && !tokenValido">
+      <div class="recuperacion-container">
+        <div class="glass-panel">
+          <header class="recuperacion-header">
+            <h1>🔐 Ingresar Código</h1>
+          </header>
+
+          <!-- Formulario de ingreso de token -->
+          <div class="form-recuperacion">
+            <div class="token-info">
+              <p>📧 Revisa tu correo y ingresa el código de 6 dígitos</p>
+              <p>📧 Enviado a: <strong>{{ emailUsuario }}</strong></p>
+            </div>
+              
+            <div class="input-group">
+              <label>Código de Recuperación</label>
+              <input type="text" 
+                     [(ngModel)]="token" 
+                     placeholder="123456"
+                     class="form-input"
+                     maxlength="6"
+                     (keydown.enter)="$event.preventDefault()">
+            </div>
+              
+            <button class="btn-primary" 
+                    (click)="validarToken()" 
+                    [disabled]="cargando || !token || token.length !== 6">
+              {{ cargando ? '⏳ Validando...' : '✅ Validar Código' }}
+            </button>
+              
+            <button class="btn-secondary" 
+                    (click)="enviarRecuperacion()" 
+                    [disabled]="cargando">
+              📧 Reenviar Código
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario para cambiar contraseña (cuando hay token válido) -->
+    <div class="form-section" *ngIf="tokenValido">
+      <div class="recuperacion-container">
+        <div class="glass-panel">
+          <header class="recuperacion-header">
+            <h1>🔐 Recuperar Contraseña</h1>
+          </header>
+
+          <!-- Formulario de recuperación -->
+          <div class="form-recuperacion">
+            <!-- Email input -->
+            <div class="input-group">
+              <label>Correo Electrónico</label>
+              <input type="email" 
+                     [(ngModel)]="emailUsuario" 
+                     placeholder="tu@email.com"
+                     class="form-input"
+                     (keydown.enter)="$event.preventDefault()">
+            </div>
+            
+            <!-- Botón enviar token -->
+            <button *ngIf="!tokenValido" 
+                    class="btn-primary" 
+                    (click)="enviarRecuperacion()" 
+                    [disabled]="cargando">
+              {{ cargando ? '⏳ Enviando...' : '📧 Enviar Token de Recuperación' }}
+            </button>
+
+            <!-- Formulario restablecer contraseña (solo cuando token es válido) -->
+            <div *ngIf="tokenValido" class="reset-form">
+              <div class="token-info">
+                <p>✅ Código validado: <strong>{{ token }}</strong></p>
+                <p *ngIf="emailUsuario">📧 Email: <strong>{{ emailUsuario }}</strong></p>
+              </div>
+              
+              <div class="input-group">
+                <label>Nueva Contraseña</label>
+                <input type="password" 
+                       [(ngModel)]="nuevaPassword" 
+                       placeholder="•••••••"
+                       class="form-input"
+                       (keydown.enter)="$event.preventDefault()">
+              </div>
+              
+              <div class="input-group">
+                <label>Confirmar Contraseña</label>
+                <input type="password" 
+                       [(ngModel)]="confirmarPassword" 
+                       placeholder="•••••••"
+                       class="form-input"
+                       (keydown.enter)="$event.preventDefault()">
+              </div>
+              
+              <button class="btn-success" 
+                      (click)="restablecerPassword()" 
+                      [disabled]="cargando">
+                {{ cargando ? '⏳ Actualizando...' : '� Restablecer Contraseña' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Mensajes ocultos -->
+          <div *ngIf="mensaje" class="mensaje" style="display: none !important;">
+            {{ mensaje }}
+          </div>
+          
+          <!-- Volver al login -->
+          <div class="back-link">
+            <a routerLink="/login">⬅️ Volver al Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div class="success-section" *ngIf="mensaje && mensaje.includes('✅')">
+      <div class="success-icon">✅</div>
+      <h3>{{ mensaje }}</h3>
+      <p>Serás redirigido en unos segundos...</p>
+    </div>
+  </div>
+</div>

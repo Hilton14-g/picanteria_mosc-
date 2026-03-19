@@ -1,0 +1,47 @@
+<div class="container">
+  <h2> Picantería El Moscú - Mesas</h2>
+  
+  <!-- Mensaje para cliente con acceso restringido -->
+  <div *ngIf="tieneAccesoRestringido()" class="acceso-restringido">
+    <h3>Tu Mesa Asignada: Mesa {{ mesaAcceso }}</h3>
+  </div>
+  
+  <p *ngIf="esAdmin" style="color: red; font-weight: bold;">⚠️ MODO ADMINISTRADOR</p>
+  <p *ngIf="esMeseroOCocinero && !esAdmin" style="color: blue; font-weight: bold;">👨‍🍳 MODO MESERO/COCINERO</p>
+  
+  <div class="grid-mesas">
+    <div *ngFor="let mesa of mesas" 
+         class="mesa-card" 
+         [ngClass]="{
+           'libre': mesa.estado === 'LIBRE', 
+           'ocupada': mesa.estado === 'OCUPADA',
+           'mesa-cliente': mesa.id === mesaAcceso && tieneAccesoRestringido(),
+           'mesa-bloqueada': mesa.id !== mesaAcceso && tieneAccesoRestringido()
+         }"
+         (click)="seleccionarMesa(mesa)">
+      
+      <div class="mesa-icon">🪑</div>
+      <div class="mesa-numero">Mesa {{mesa.id}}</div>
+      <div class="mesa-estado">{{mesa.estado}}</div>
+      
+      <div *ngIf="mesa.id !== mesaAcceso && tieneAccesoRestringido()" class="indicador-bloqueado">
+        🔒 No disponible
+      </div>
+
+      <div class="mesa-acciones">
+        <!-- Cliente: solo puede editar su mesa -->
+        <button *ngIf="mesa.id === mesaAcceso && tieneAccesoRestringido()" 
+                class="btn-editar-pedido">
+           📝 Editar Pedido
+        </button>
+        
+        <!-- Admin/Mesero/Cocinero: acciones normales -->
+        <button *ngIf="mesa.estado === 'OCUPADA' && esAdmin" 
+                class="btn-liberar" 
+                (click)="liberarMesa($event, mesa.id)">
+           Liberar Mesa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
